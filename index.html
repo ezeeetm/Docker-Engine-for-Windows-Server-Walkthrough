@@ -45,9 +45,14 @@
 
 <ol>
 <li><p><a href="https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-technical-preview">Download </a>the .iso for Windows Server 2016 TP3.  This requires registration for a TechNet account as well as additional registration for the evaluation download.  Only the .iso is required, you do not need to download the .wim file.</p></li>
-<li><p>Before installing, note the following:
-Install  options:
-    Bare metal: create bootable DVD/USB and complete a bare metal install.</p></li>
+<li>
+<p>Before installing, note the following:</p>
+
+<p>Install  options:</p>
+
+<pre><code>Bare metal: create bootable DVD/USB and complete a bare metal install.
+</code></pre>
+</li>
 <li>VM: create a 64-bit virtual machine in VirtualBox/HyperV/vmWare/etc.  For this walkthrough, we will be using vmWare ESXi.</li>
 <li>Cloud instance: At this time, AWS EC2 does not offer an AMI for Windows Server 2016 TP3 with Windows Server Containers, however (of course) Azure does.  YMMV on other cloud platforms.</li>
 <li><p>According to Microsoft, the full (GUI) installation of Windows Server does not support containers at this point in time, and they recommend only installing Windows Server Core.  However, I have tested this install on both Full /Core, and Docker seemed to work as expected in both versions.  For this walkthrough, we will use Windows Server Core.</p></li>
