@@ -29,80 +29,65 @@
 
 <p>Until very recently, it was not possible to use a Windows Server platform to host the Docker Engine without adding an additional layer of virtualization.  That all changed with the recent <a href="https://blog.docker.com/2015/08/tp-docker-engine-windows-server-2016/">release</a> of Windows Server 2016 TP3, which provides a bona-fide Docker daemon running natively on an actual Windows Server host.  To many, this is the long awaited missing piece that clears the path to using Docker containers, tools, and workflows in production Windows environments.</p>
 
-<p>Docker Engine for Windows Server requires Windows Server 2016, which is currently only in the Technical Preview 3 release stage.  Like most bleeding-edge projects, Docker Engine for Windows Server is still very much in the skunkworks phase.  The current set of official documentation is sparse, fragmented, and a bit elusive.  In this walkthrough, we will outline the end-to-end steps required to quickly get up and running Docker Engine for Windows Server, from host OS install through your first docker run.</p>
+<p>Docker Engine for Windows Server requires Windows Server 2016, which is currently only in the Technical Preview 3 release stage.  Like most bleeding-edge projects, Docker Engine for Windows Server is still very much in the skunkworks phase.  The current set of official documentation is sparse, fragmented, and a bit elusive.  In this walkthrough, we will outline the end-to-end steps required to quickly get up and running Docker Engine for Windows Server, from host OS install through your first <code>docker run</code> command.</p>
 
-<p>Go ahead and skip to the <strong>walkthrough</strong> steps below, but circle back here during progress bar breaks to read these key points about Docker Engine for Windows Server:</p>
+<p>Go ahead and skip to the <strong>Walkthrough:</strong> section below, but circle back here during progress bar breaks to read these key points about Docker Engine for Windows Server:</p>
 
 <ul>
 <li><p><strong>There will be no cross platform containerization</strong>.  Since Docker/libcontainer/LXC/etc are not a hypervisors, and containers are not vms, there is currently no way to present the appropriate kernel to a container from another platform.  Windows containers will require a Windows Docker host, and Linux containers will require a Linux Docker host.  The Windows Server Containers reuse the host kernel and create a sandboxed environment for the process, exactly like it does on Linux.  Unless there is an unlikely fundamental change in one or both platforms (e.g. adopting a common kernel), cross platform containerization will simply never be a thing.</p></li>
-<li><p><strong>There will be two types of containers on Windows</strong>.  “Windows Containers” work just like Docker containers.  “Hyper-V Containers” are <a href="http://windowsitpro.com/windows-server-2016/differences-between-windows-containers-and-hyper-v-containers-windows-server-201">something different.</a>.</p></li>
-<li><p><strong>There will be two ways to manage containers in Windows</strong>.   Windows Containers can be created and managed through either Docker or Powershell.  Containers created with PowerShell cannot currently be managed with Docker and visa versa</p></li>
+<li><p><strong>There will be two types of containers on Windows</strong>.  “Windows Containers” work just like Docker containers.  “Hyper-V Containers” are <a href="http://windowsitpro.com/windows-server-2016/differences-between-windows-containers-and-hyper-v-containers-windows-server-201">something different...</a></p></li>
+<li><p><strong>There will be two ways to manage containers in Windows</strong>.   Windows Containers can be created and managed through either Docker or Powershell.  Containers created with PowerShell cannot currently be managed with Docker and visa versa.</p></li>
 <li><p><strong>Windows Nano Server</strong>.  <a href="http://www.computerweekly.com/news/2240242818/Microsofts-Nano-Server-What-to-expect-from-this-leaner-meaner-Windows-Server">Nano Server </a>is stripped-down version of Windows Server 2016, optimized for running containers.  In the Linux Docker world, think CoreOS, RHEL Atomic Host and Ubuntu Snappy.  <a href="http://blogs.technet.com/b/nanoserver/archive/2015/05/12/welcome-to-the-new-nano-server-blog.aspx">Apparently </a>the Windows Server Technical Preview 2 .iso contained a Nano Server folder in the image, as well a deployment guide.  I did not check the TP3 .iso, mostly because the current <a href="http://www.happysysadm.com/2015/06/how-to-build-your-first-fantastic-nano.html">process</a> to provision a Nano instance looks like a blunderous and buggy PITA.  I remain interested in duplicating the process outlined here on Windows Nano Server, perhaps another day...</p></li>
 </ul>
 
 <h1>
 <a id="walkthrough-getting-started-with-docker-engine-for-windows-server" class="anchor" href="#walkthrough-getting-started-with-docker-engine-for-windows-server" aria-hidden="true"><span class="octicon octicon-link"></span></a>Walkthrough: Getting Started with Docker Engine for Windows Server</h1>
 
-<p><a href="https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-technical-preview">Download </a>the .iso for Windows Server 2016 TP3.  This requires registration for a TechNet account as well as additional registration for the evaluation download.  Only the .iso is required, you do not need to download the .wim file.</p>
-
-<p>Before installing, note the following:
-Install  options:
-Bare metal: create bootable DVD/USB and complete a bare metal install.
-VM: create a 64-bit virtual machine in VirtualBox/HyperV/vmWare/etc.  For this walkthrough, we will be using vmWare ESXi.
-Cloud instance: At this time, AWS EC2 does not offer an AMI for Windows Server 2016 TP3 with Windows Server Containers, however (of course) Azure does.  YMMV on other cloud platforms.
-According to Microsoft, the full (GUI) installation of Windows Server does not support containers at this point in time, and they recommend only installing Windows Server Core.  However, I have tested this install on both Full /Core, and Docker seemed to work as expected in both versions.  For this walkthrough, we will use Windows Server Core.</p>
-
-<p>Using the .iso downloaded in step 1 above, proceed to install Windows Server 2016 TP3, noting the following during the installation:
-Click “Install now”
-To install Windows Server Core, choose “Windows Server 2016 Technical Preview 3”, not “Windows Server 2016 Technical Preview 3 (Server with Desktop Experience)”, click Next.</p>
-
-<p>Accept the license agreement, click Next.
-Choose “Custom”
-Configure your partitions, accept any dialogues about Windows Partitions, choose the largest partition created, and click “install”.</p>
-
-<p>When the install is complete, the system will reboot.
-After reboot, you will be prompted to change the Administrator password.  Ensure “Ok” is selected, press Enter, provide and confirm a password, press Enter twice.</p>
-
-<p>Windows will briefly set up the system for first use, and you will be presented with a command prompt.  Installation of Windows Server 2016 TP3 (Core) is complete.</p>
-
-<p>Setup Windows Server host for Containers 
-powershell.exe
-Ensure console window looks like this:</p>
-
-<p>If it does not (still in the powershell window) do: start-process powershell -Verb runas
-wget -uri <a href="http://aka.ms/setupcontainers">http://aka.ms/setupcontainers</a> -OutFile C:\ContainerSetup.ps1</p>
-
-<p>C:\ContainerSetup.ps1</p>
-
-<p>OS will reboot, install some features, and prompt for credentials</p>
-
-<p>Provide the credentials created earlier.  As soon as you login, a PowerShell session will spawn and the setup will continue.</p>
-
-<p>During the setup process, a very large .wim file will be downloaded.  This takes a long time (~45 minutes for me), and does not provide any console feedback to indicate the progress.  Don’t worry, your box is not locked up.</p>
-
-<p>At the end of the download, the setup process will resume</p>
-
-<p>The setup will indicate “Installing Docker…”, “Script complete!”, and present you with a prompt in the PowerShell console.</p>
-
-<p>Do docker version to confirm both the client and server components were installed successfully.</p>
-
-<p>Do Docker stuff.  The Technical Preview of Docker for Windows Server isn’t feature complete yet (and taking into account that the feature sets will never be exactly identical given the differences of the underlying platforms), most of the Docker commands you already know will work as expected on Windows Server.  Here’s what it thinks it can do, anyway, I’ve tested a great deal of this without any issues:</p>
-
-<p>Let’s kick the tires.
-docker images</p>
-
-<p>docker run -it --name dockerdemo windowsservercore cmd, and you are in a Windows Server Core container (windowsservercore), called dockerdemo, using an interactive terminal (-it cmd) running on a Windows Server Core Docker host!</p>
-
-<p>Where to go from here?
-Manage Windows Server Containers with Docker
-Manage Windows Server Containers with PowerShell
-Docker official documentation
-Docker Training
-<a href="https://github.com/botchagalupe" class="user-mention">@botchagalupe</a>’s kick-ass, 13 part Docker tutorial video series
-...and, a bunch of Windows Server 2016 TP3 stuff:
-release notes
-TechNet Library: What's New in Windows Server 2016 Technical Preview 3
-MVA Course: What's new in Windows Server 2016 Preview</p>
+<ol>
+<li><p><a href="https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-technical-preview">Download </a>the .iso for Windows Server 2016 TP3.  This requires registration for a TechNet account as well as additional registration for the evaluation download.  Only the .iso is required, you do not need to download the .wim file.</p></li>
+<li><p>Before installing, note the following:</p></li>
+<li>Install  options:</li>
+<li>Bare metal: create bootable DVD/USB and complete a bare metal install.</li>
+<li>VM: create a 64-bit virtual machine in VirtualBox/HyperV/vmWare/etc.  For this walkthrough, we will be using vmWare ESXi.</li>
+<li>Cloud instance: At this time, AWS EC2 does not offer an AMI for Windows Server 2016 TP3 with Windows Server Containers, however (of course) Azure does.  YMMV on other cloud platforms.</li>
+<li><p>According to Microsoft, the full (GUI) installation of Windows Server does not support containers at this point in time, and they recommend only installing Windows Server Core.  However, I have tested this install on both Full /Core, and Docker seemed to work as expected in both versions.  For this walkthrough, we will use Windows Server Core.</p></li>
+<li><p>Using the .iso downloaded in step 1 above, proceed to install Windows Server 2016 TP3, noting the following during the installation:</p></li>
+<li>Click “Install now”</li>
+<li><p>To install Windows Server Core, choose “Windows Server 2016 Technical Preview 3”, not “Windows Server 2016 Technical Preview 3 (Server with Desktop Experience)”, click Next.</p></li>
+<li><p>Accept the license agreement, click Next.</p></li>
+<li>Choose “Custom”</li>
+<li><p>Configure your partitions, accept any dialogues about Windows Partitions, choose the largest partition created, and click “install”.</p></li>
+<li><p>When the install is complete, the system will reboot.</p></li>
+<li><p>After reboot, you will be prompted to change the Administrator password.  Ensure “Ok” is selected, press Enter, provide and confirm a password, press Enter twice.</p></li>
+<li><p>Windows will briefly set up the system for first use, and you will be presented with a command prompt.  Installation of Windows Server 2016 TP3 (Core) is complete.</p></li>
+<li><p>Setup Windows Server host for Containers </p></li>
+<li>powershell.exe</li>
+<li><p>Ensure console window looks like this:</p></li>
+<li><p>If it does not (still in the powershell window) do: start-process powershell -Verb runas</p></li>
+<li><p>wget -uri <a href="http://aka.ms/setupcontainers">http://aka.ms/setupcontainers</a> -OutFile C:\ContainerSetup.ps1</p></li>
+<li><p>C:\ContainerSetup.ps1</p></li>
+<li><p>OS will reboot, install some features, and prompt for credentials</p></li>
+<li><p>Provide the credentials created earlier.  As soon as you login, a PowerShell session will spawn and the setup will continue.</p></li>
+<li><p>During the setup process, a very large .wim file will be downloaded.  This takes a long time (~45 minutes for me), and does not provide any console feedback to indicate the progress.  Don’t worry, your box is not locked up.</p></li>
+<li><p>At the end of the download, the setup process will resume</p></li>
+<li><p>The setup will indicate “Installing Docker…”, “Script complete!”, and present you with a prompt in the PowerShell console.</p></li>
+<li><p>Do docker version to confirm both the client and server components were installed successfully.</p></li>
+<li><p>Do Docker stuff.  The Technical Preview of Docker for Windows Server isn’t feature complete yet (and taking into account that the feature sets will never be exactly identical given the differences of the underlying platforms), most of the Docker commands you already know will work as expected on Windows Server.  Here’s what it thinks it can do, anyway, I’ve tested a great deal of this without any issues:</p></li>
+<li><p>Let’s kick the tires.</p></li>
+<li><p>docker images</p></li>
+<li><p>docker run -it --name dockerdemo windowsservercore cmd, and you are in a Windows Server Core container (windowsservercore), called dockerdemo, using an interactive terminal (-it cmd) running on a Windows Server Core Docker host!</p></li>
+<li><p>Where to go from here?</p></li>
+<li>Manage Windows Server Containers with Docker</li>
+<li>Manage Windows Server Containers with PowerShell</li>
+<li>Docker official documentation</li>
+<li>Docker Training</li>
+<li>
+<a href="https://github.com/botchagalupe" class="user-mention">@botchagalupe</a>’s kick-ass, 13 part Docker tutorial video series</li>
+<li>...and, a bunch of Windows Server 2016 TP3 stuff:</li>
+<li>release notes</li>
+<li>TechNet Library: What's New in Windows Server 2016 Technical Preview 3</li>
+<li>MVA Course: What's new in Windows Server 2016 Preview</li>
+</ol>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough">Walkthrough: Docker Engine for Windows Server</a> is maintained by <a href="https://github.com/ezeeetm">ezeeetm</a>.</span>
