@@ -69,7 +69,7 @@
 <p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/2.PNG" alt=""></p>
 </li>
 <li><p>Accept the license agreement, click Next.</p></li>
-<li>Choose “Custom”</li>
+<li><p>Choose “Custom”</p></li>
 <li>
 <p>Configure your partitions, accept any dialogues about Windows Partitions, choose the largest partition created, and click “install”.</p>
 
@@ -100,12 +100,44 @@
 <p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/6.PNG" alt=""></p>
 </li>
 <li><p>If it does not (still in the powershell window) do: <code>start-process powershell -Verb runas</code></p></li>
-<li><p>do <code>wget -uri http://aka.ms/setupcontainers -OutFile C:\ContainerSetup.ps1</code></p></li>
-<li><p>C:\ContainerSetup.ps1</p></li>
-<li><p>OS will reboot, install some features, and prompt for credentials</p></li>
-<li><p>Provide the credentials created earlier.  As soon as you login, a PowerShell session will spawn and the setup will continue.</p></li>
-<li><p>During the setup process, a very large .wim file will be downloaded.  This takes a long time (~45 minutes for me), and does not provide any console feedback to indicate the progress.  Don’t worry, your box is not locked up.</p></li>
-<li><p>At the end of the download, the setup process will resume</p></li>
+<li>do <code>wget -uri http://aka.ms/setupcontainers -OutFile C:\ContainerSetup.ps1</code>
+</li>
+</ol>
+
+<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/7.PNG" alt=""></p>
+
+<ol>
+<li>do <code>C:\ContainerSetup.ps1</code>
+</li>
+</ol>
+
+<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/8.PNG" alt=""></p>
+
+<ol>
+<li>OS will reboot, install some features, and prompt for credentials.</li>
+</ol>
+
+<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/9.PNG" alt=""></p>
+
+<ol>
+<li>Provide the credentials created earlier.  As soon as you login, a PowerShell session will spawn and the setup will continue.</li>
+</ol>
+
+<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/10.PNG" alt=""></p>
+
+<ol>
+<li>During the setup process, a very large .wim file will be downloaded.  This takes a long time (~45 minutes for me), and does not provide any console feedback to indicate the progress.  Don’t worry, your box is not locked up.</li>
+</ol>
+
+<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/11.PNG" alt=""></p>
+
+<ol>
+<li>At the end of the download, the setup process will resume.</li>
+</ol>
+
+<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/12.PNG" alt=""></p>
+
+<ol>
 <li><p>The setup will indicate “Installing Docker…”, “Script complete!”, and present you with a prompt in the PowerShell console.</p></li>
 <li><p>Do docker version to confirm both the client and server components were installed successfully.</p></li>
 <li><p>Do Docker stuff.  The Technical Preview of Docker for Windows Server isn’t feature complete yet (and taking into account that the feature sets will never be exactly identical given the differences of the underlying platforms), most of the Docker commands you already know will work as expected on Windows Server.  Here’s what it thinks it can do, anyway, I’ve tested a great deal of this without any issues:</p></li>
