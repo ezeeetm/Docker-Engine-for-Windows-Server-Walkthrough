@@ -1,34 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <meta charset="UTF-8">
+    <title>Walkthrough: Docker Engine for Windows Server by ezeeetm</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-    <title>Walkthrough: Docker Engine for Windows Server by ezeeetm</title>
   </head>
-
   <body>
-    <header>
-      <div class="inner">
-        <h1>Walkthrough: Docker Engine for Windows Server</h1>
-        <h2>Step-by-step walk through for getting started with Docker Engine for Windows Server</h2>
-        <a href="https://github.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough" class="button"><small>View project on</small> GitHub</a>
-      </div>
-    </header>
+    <section class="page-header">
+      <h1 class="project-name">Walkthrough: Docker Engine for Windows Server</h1>
+      <h2 class="project-tagline">Step-by-step walk through for getting started with Docker Engine for Windows Server</h2>
+      <a href="https://github.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough" class="btn">View on GitHub</a>
+      <a href="https://github.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <p>By now, we've all seen the posts and <a href="https://twitter.com/windowsserver">tweets</a> from the IT blogosphere, heralding the arrival of Docker for Windows.  Now, to be clear: the ecosystem of Docker tools for Windows is nothing new.  Tools such as  <a href="http://boot2docker.io/">Boot2Docker</a>, <a href="https://kitematic.com/">Kitematic</a>, and the <a href="https://azure.microsoft.com/blog/2015/04/16/docker-client-for-windows-is-now-available/">Docker Client for Windows</a> have been around for a while, and their collective functionality for Windows has recently been rolled up into <a href="https://www.docker.com/toolbox">Docker Toolbox</a>.  While these tools don’t really provide the full, native Docker experience on Windows, they do provide:</p>
+    <section class="main-content">
+      <p>By now, we've all seen the posts and <a href="https://twitter.com/windowsserver">tweets</a> from the IT blogosphere, heralding the arrival of Docker for Windows.  Now, to be clear: the ecosystem of Docker tools for Windows is nothing new.  Tools such as  <a href="http://boot2docker.io/">Boot2Docker</a>, <a href="https://kitematic.com/">Kitematic</a>, and the <a href="https://azure.microsoft.com/blog/2015/04/16/docker-client-for-windows-is-now-available/">Docker Client for Windows</a> have been around for a while, and their collective functionality for Windows has recently been rolled up into <a href="https://www.docker.com/toolbox">Docker Toolbox</a>.  While these tools don’t really provide the full, native Docker experience on Windows, they do provide:</p>
 
 <ul>
 <li>a gateway drug Docker experience for Windows/Mac users, inside a Linux VM.</li>
@@ -43,15 +34,10 @@
 <p>Go ahead and skip to the <strong>walkthrough</strong> steps below, but circle back here during progress bar breaks to read these key points about Docker Engine for Windows Server:</p>
 
 <ul>
-<li><strong>There will be no cross platform containerization</strong></li>
-<li><p>Since Docker/libcontainer/LXC/etc are not a hypervisors, and containers are not vms, there is currently no way to present the appropriate kernel to a container from another platform.  Windows containers will require a Windows Docker host, and Linux containers will require a Linux Docker host.  The Windows Server Containers reuse the host kernel and create a sandboxed environment for the process, exactly like it does on Linux.  Unless there is an unlikely fundamental change in one or both platforms (e.g. adopting a common kernel), cross platform containerization will simply never be a thing.</p></li>
-<li><p><strong>There will be two types of containers on Windows</strong></p></li>
-<li><p>“Windows Containers” work just like Docker containers.  “Hyper-V Containers” are <a href="http://windowsitpro.com/windows-server-2016/differences-between-windows-containers-and-hyper-v-containers-windows-server-201">something different.</a>.</p></li>
-<li><p><strong>There will be two ways to manage containers in Windows</strong></p></li>
-<li><p>Windows Containers can be created and managed through either Docker or Powershell.  Containers created with PowerShell cannot currently be managed with Docker and visa versa</p></li>
-<li><p><strong>Windows Nano Server</strong></p></li>
-<li>
-<a href="http://www.computerweekly.com/news/2240242818/Microsofts-Nano-Server-What-to-expect-from-this-leaner-meaner-Windows-Server">Nano Server </a>is stripped-down version of Windows Server 2016, optimized for running containers.  In the Linux Docker world, think CoreOS, RHEL Atomic Host and Ubuntu Snappy.  <a href="http://blogs.technet.com/b/nanoserver/archive/2015/05/12/welcome-to-the-new-nano-server-blog.aspx">Apparently </a>the Windows Server Technical Preview 2 .iso contained a Nano Server folder in the image, as well a deployment guide.  I did not check the TP3 .iso, mostly because the current <a href="http://www.happysysadm.com/2015/06/how-to-build-your-first-fantastic-nano.html">process</a> to provision a Nano instance looks like a blunderous and buggy PITA.  I remain interested in duplicating the process outlined here on Windows Nano Server, perhaps another day...</li>
+<li><p><strong>There will be no cross platform containerization</strong>.  Since Docker/libcontainer/LXC/etc are not a hypervisors, and containers are not vms, there is currently no way to present the appropriate kernel to a container from another platform.  Windows containers will require a Windows Docker host, and Linux containers will require a Linux Docker host.  The Windows Server Containers reuse the host kernel and create a sandboxed environment for the process, exactly like it does on Linux.  Unless there is an unlikely fundamental change in one or both platforms (e.g. adopting a common kernel), cross platform containerization will simply never be a thing.</p></li>
+<li><p><strong>There will be two types of containers on Windows</strong>.  “Windows Containers” work just like Docker containers.  “Hyper-V Containers” are <a href="http://windowsitpro.com/windows-server-2016/differences-between-windows-containers-and-hyper-v-containers-windows-server-201">something different.</a>.</p></li>
+<li><p><strong>There will be two ways to manage containers in Windows</strong>.   Windows Containers can be created and managed through either Docker or Powershell.  Containers created with PowerShell cannot currently be managed with Docker and visa versa</p></li>
+<li><p><strong>Windows Nano Server</strong>.  <a href="http://www.computerweekly.com/news/2240242818/Microsofts-Nano-Server-What-to-expect-from-this-leaner-meaner-Windows-Server">Nano Server </a>is stripped-down version of Windows Server 2016, optimized for running containers.  In the Linux Docker world, think CoreOS, RHEL Atomic Host and Ubuntu Snappy.  <a href="http://blogs.technet.com/b/nanoserver/archive/2015/05/12/welcome-to-the-new-nano-server-blog.aspx">Apparently </a>the Windows Server Technical Preview 2 .iso contained a Nano Server folder in the image, as well a deployment guide.  I did not check the TP3 .iso, mostly because the current <a href="http://www.happysysadm.com/2015/06/how-to-build-your-first-fantastic-nano.html">process</a> to provision a Nano instance looks like a blunderous and buggy PITA.  I remain interested in duplicating the process outlined here on Windows Nano Server, perhaps another day...</p></li>
 </ul>
 
 <h1>
@@ -117,24 +103,14 @@ Docker Training
 release notes
 TechNet Library: What's New in Windows Server 2016 Technical Preview 3
 MVA Course: What's new in Windows Server 2016 Preview</p>
-        </section>
 
-        <aside id="sidebar">
-          <a href="https://github.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough">Walkthrough: Docker Engine for Windows Server</a> is maintained by <a href="https://github.com/ezeeetm">ezeeetm</a>.</span>
 
-          <p class="repo-owner"><a href="https://github.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough"></a> is maintained by <a href="https://github.com/ezeeetm">ezeeetm</a>.</p>
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
 
-          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
-    </div>
+    </section>
 
   
   </body>
