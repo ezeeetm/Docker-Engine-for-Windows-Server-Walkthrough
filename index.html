@@ -100,50 +100,68 @@
 <p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/6.PNG" alt=""></p>
 </li>
 <li><p>If it does not (still in the powershell window) do: <code>start-process powershell -Verb runas</code></p></li>
-<li>do <code>wget -uri http://aka.ms/setupcontainers -OutFile C:\ContainerSetup.ps1</code>
-</li>
-</ol>
+<li>
+<p>do <code>wget -uri http://aka.ms/setupcontainers -OutFile C:\ContainerSetup.ps1</code></p>
 
 <p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/7.PNG" alt=""></p>
+</li>
+<li>
+<p>do <code>C:\ContainerSetup.ps1</code></p>
 
-<ol>
-<li>do <code>C:\ContainerSetup.ps1</code>
+<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/8.PNG" alt=""></p>
+</li>
+<li>
+<p>OS will reboot, install some features, and prompt for credentials.</p>
+
+<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/9.PNG" alt=""></p>
+</li>
+<li>
+<p>Provide the credentials created earlier.  As soon as you login, a PowerShell session will spawn and the setup will continue.</p>
+
+<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/10.PNG" alt=""></p>
+</li>
+<li>
+<p>During the setup process, a very large .wim file will be downloaded.  This takes a long time (~45 minutes for me), and does not provide any console feedback to indicate the progress.  Don’t worry, your box is not locked up.</p>
+
+<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/11.PNG" alt=""></p>
+</li>
+<li>
+<p>At the end of the download, the setup process will resume.</p>
+
+<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/12.PNG" alt=""></p>
+</li>
+<li>
+<p>The setup will indicate “Installing Docker…”, “Script complete!”, and present you with a prompt in the PowerShell console.</p>
+
+<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/13.PNG" alt=""></p>
 </li>
 </ol>
 
-<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/8.PNG" alt=""></p>
+<h2>
+<a id="do-docker-stuff" class="anchor" href="#do-docker-stuff" aria-hidden="true"><span class="octicon octicon-link"></span></a>Do Docker stuff</h2>
 
 <ol>
-<li>OS will reboot, install some features, and prompt for credentials.</li>
-</ol>
+<li>
+<p>Do docker version to confirm both the client and server components were installed successfully.</p>
 
-<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/9.PNG" alt=""></p>
+<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/14.PNG" alt=""></p>
+</li>
+<li>
+<p>The Technical Preview of Docker for Windows Server isn’t feature complete yet (and taking into account that the feature sets will never be exactly identical given the differences of the underlying platforms), most of the Docker commands you already know will work as expected on Windows Server.  Here’s what it thinks it can do, anyway, I’ve tested a great deal of this without any issues:</p>
 
-<ol>
-<li>Provide the credentials created earlier.  As soon as you login, a PowerShell session will spawn and the setup will continue.</li>
-</ol>
+<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/15.PNG" alt=""></p>
+</li>
+<li>
+<p>Let’s kick the tires.
+</p>
 
-<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/10.PNG" alt=""></p>
+<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/16.PNG" alt=""></p>
 
-<ol>
-<li>During the setup process, a very large .wim file will be downloaded.  This takes a long time (~45 minutes for me), and does not provide any console feedback to indicate the progress.  Don’t worry, your box is not locked up.</li>
-</ol>
+<p>
+Now you are in a Windows Server Core container (windowsservercore), called dockerdemo, using an interactive terminal (-it cmd) running on a Windows Server Core Docker host!</p>
 
-<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/11.PNG" alt=""></p>
-
-<ol>
-<li>At the end of the download, the setup process will resume.</li>
-</ol>
-
-<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/12.PNG" alt=""></p>
-
-<ol>
-<li><p>The setup will indicate “Installing Docker…”, “Script complete!”, and present you with a prompt in the PowerShell console.</p></li>
-<li><p>Do docker version to confirm both the client and server components were installed successfully.</p></li>
-<li><p>Do Docker stuff.  The Technical Preview of Docker for Windows Server isn’t feature complete yet (and taking into account that the feature sets will never be exactly identical given the differences of the underlying platforms), most of the Docker commands you already know will work as expected on Windows Server.  Here’s what it thinks it can do, anyway, I’ve tested a great deal of this without any issues:</p></li>
-<li><p>Let’s kick the tires.</p></li>
-<li><p>docker images</p></li>
-<li><p>docker run -it --name dockerdemo windowsservercore cmd, and you are in a Windows Server Core container (windowsservercore), called dockerdemo, using an interactive terminal (-it cmd) running on a Windows Server Core Docker host!</p></li>
+<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/17.PNG" alt=""></p>
+</li>
 <li><p>Where to go from here?</p></li>
 <li>Manage Windows Server Containers with Docker</li>
 <li>Manage Windows Server Containers with PowerShell</li>
