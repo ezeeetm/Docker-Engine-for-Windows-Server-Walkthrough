@@ -43,6 +43,9 @@
 <h1>
 <a id="walkthrough-getting-started-with-docker-engine-for-windows-server" class="anchor" href="#walkthrough-getting-started-with-docker-engine-for-windows-server" aria-hidden="true"><span class="octicon octicon-link"></span></a>Walkthrough: Getting Started with Docker Engine for Windows Server</h1>
 
+<h2>
+<a id="install-windows-server-2016-tp3-core" class="anchor" href="#install-windows-server-2016-tp3-core" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install Windows Server 2016 TP3 (Core)</h2>
+
 <ol>
 <li>
 <p><a href="https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-technical-preview">Download </a>the .iso for Windows Server 2016 TP3.  This requires registration for a TechNet account as well as additional registration for the evaluation download.  Only the .iso is required, you do not need to download the .wim file.</p>
@@ -59,21 +62,37 @@
 <p><strong>Cloud instance:</strong> At this time, AWS EC2 does not offer an AMI for Windows Server 2016 TP3 with Windows Server Containers, however (of course) <a href="https://msdn.microsoft.com/virtualization/windowscontainers/quick_start/azure_setup">Azure</a> does.  YMMV on other cloud platforms.</p>
 </li>
 <li><p><a href="http://blogs.msdn.com/b/virtual_pc_guy/archive/2015/08/20/do-you-need-hyper-v-to-try-windows-containers.aspx?wt.mc_id=WW_CE_WS_OO_SCL_TW">According</a> to Microsoft, the full (GUI) installation of Windows Server does not support containers at this point in time, and they recommend only installing Windows Server Core.  However, I have tested this install on both Full /Core, and Docker seemed to work as expected in both versions.  For this walkthrough, we will use Windows Server Core.</p></li>
-<li><p>Using the .iso downloaded in step 1 above, proceed to install Windows Server 2016 TP3, Click “Install now” when prompted.</p></li>
+<li><p>Using the .iso downloaded in step 1 above, proceed to install Windows Server 2016 TP3, click “Install now” when prompted.</p></li>
 <li>
-<p>To install Windows Server Core, choose “Windows Server 2016 Technical Preview 3”, not “Windows Server 2016 Technical Preview 3 (Server with Desktop Experience)”, click Next.</p>
+<p>To install Windows Server Core, choose “Windows Server 2016 Technical Preview 3”, not “Windows Server 2016 Technical Preview 3 (Server with Desktop Experience)”, click "Next".</p>
 
 <p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/2.PNG" alt=""></p>
 </li>
 <li><p>Accept the license agreement, click Next.</p></li>
 <li>Choose “Custom”</li>
-<li><p>Configure your partitions, accept any dialogues about Windows Partitions, choose the largest partition created, and click “install”.</p></li>
+<li>
+<p>Configure your partitions, accept any dialogues about Windows Partitions, choose the largest partition created, and click “install”.</p>
+
+<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/3.PNG" alt=""></p>
+</li>
 <li><p>When the install is complete, the system will reboot.</p></li>
-<li><p>After reboot, you will be prompted to change the Administrator password.  Ensure “Ok” is selected, press Enter, provide and confirm a password, press Enter twice.</p></li>
-<li><p>Windows will briefly set up the system for first use, and you will be presented with a command prompt.  Installation of Windows Server 2016 TP3 (Core) is complete.</p></li>
+<li>
+<p>After reboot, you will be prompted to change the Administrator password.  Ensure “Ok” is selected, press Enter, provide and confirm a password, press Enter twice.</p>
+
+<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/4.PNG" alt=""></p>
+</li>
+<li>
+<p>Windows will briefly set up the system for first use, and you will be presented with a command prompt.  Installation of Windows Server 2016 TP3 (Core) is complete.</p>
+
+<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/5.PNG" alt=""></p>
+</li>
 <li><p>Setup Windows Server host for Containers </p></li>
 <li>powershell.exe</li>
-<li><p>Ensure console window looks like this:</p></li>
+<li>
+<p>Ensure console window looks like this:</p>
+
+<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/6.PNG" alt=""></p>
+</li>
 <li><p>If it does not (still in the powershell window) do: start-process powershell -Verb runas</p></li>
 <li><p>wget -uri <a href="http://aka.ms/setupcontainers">http://aka.ms/setupcontainers</a> -OutFile C:\ContainerSetup.ps1</p></li>
 <li><p>C:\ContainerSetup.ps1</p></li>
