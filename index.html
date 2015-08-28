@@ -48,13 +48,11 @@
 <li>
 <p>Before installing, note the following:</p>
 
-<p>Install  options:</p>
-
-<pre><code>Bare metal: create bootable DVD/USB and complete a bare metal install.
-</code></pre>
+<p><strong>Install  options:</strong>
+<strong>Bare metal:</strong> create bootable DVD/USB and complete a bare metal install.
+<strong>VM:</strong> create a 64-bit virtual machine in VirtualBox/HyperV/vmWare/etc.  For this walkthrough, we will be using vmWare ESXi.
+<strong>Cloud instance:</strong> At this time, AWS EC2 does not offer an AMI for Windows Server 2016 TP3 with Windows Server Containers, however (of course) Azure does.  YMMV on other cloud platforms.</p>
 </li>
-<li>VM: create a 64-bit virtual machine in VirtualBox/HyperV/vmWare/etc.  For this walkthrough, we will be using vmWare ESXi.</li>
-<li>Cloud instance: At this time, AWS EC2 does not offer an AMI for Windows Server 2016 TP3 with Windows Server Containers, however (of course) Azure does.  YMMV on other cloud platforms.</li>
 <li><p>According to Microsoft, the full (GUI) installation of Windows Server does not support containers at this point in time, and they recommend only installing Windows Server Core.  However, I have tested this install on both Full /Core, and Docker seemed to work as expected in both versions.  For this walkthrough, we will use Windows Server Core.</p></li>
 <li><p>Using the .iso downloaded in step 1 above, proceed to install Windows Server 2016 TP3, noting the following during the installation:</p></li>
 <li>Click “Install now”</li>
