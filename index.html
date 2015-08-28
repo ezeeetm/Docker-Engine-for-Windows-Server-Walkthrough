@@ -59,12 +59,11 @@
 <p><strong>Cloud instance:</strong> At this time, AWS EC2 does not offer an AMI for Windows Server 2016 TP3 with Windows Server Containers, however (of course) <a href="https://msdn.microsoft.com/virtualization/windowscontainers/quick_start/azure_setup">Azure</a> does.  YMMV on other cloud platforms.</p>
 </li>
 <li><p><a href="http://blogs.msdn.com/b/virtual_pc_guy/archive/2015/08/20/do-you-need-hyper-v-to-try-windows-containers.aspx?wt.mc_id=WW_CE_WS_OO_SCL_TW">According</a> to Microsoft, the full (GUI) installation of Windows Server does not support containers at this point in time, and they recommend only installing Windows Server Core.  However, I have tested this install on both Full /Core, and Docker seemed to work as expected in both versions.  For this walkthrough, we will use Windows Server Core.</p></li>
-<li><p>Using the .iso downloaded in step 1 above, proceed to install Windows Server 2016 TP3, noting the following during the installation:</p></li>
-<li>Click “Install now”</li>
+<li><p>Using the .iso downloaded in step 1 above, proceed to install Windows Server 2016 TP3, Click “Install now” when prompted.</p></li>
 <li>
 <p>To install Windows Server Core, choose “Windows Server 2016 Technical Preview 3”, not “Windows Server 2016 Technical Preview 3 (Server with Desktop Experience)”, click Next.</p>
 
-<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/1.PNG" alt=""></p>
+<p><img src="https://raw.githubusercontent.com/ezeeetm/Docker-Engine-for-Windows-Server-Walkthrough/master/images/2.PNG" alt=""></p>
 </li>
 <li><p>Accept the license agreement, click Next.</p></li>
 <li>Choose “Custom”</li>
