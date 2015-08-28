@@ -31,7 +31,7 @@
 
 <p>Docker Engine for Windows Server requires Windows Server 2016, which is currently only in the Technical Preview 3 release stage.  Like most bleeding-edge projects, Docker Engine for Windows Server is still very much in the skunkworks phase.  The current set of official documentation is sparse, fragmented, and a bit elusive.  In this walkthrough, we will outline the end-to-end steps required to quickly get up and running Docker Engine for Windows Server, from host OS install through your first <code>docker run</code> command.</p>
 
-<p>Go ahead and skip to the <strong>Walkthrough:</strong> section below, but circle back here during progress bar breaks to read these key points about Docker Engine for Windows Server, gleaned from the Windows Server team at Dockercon:</p>
+<p>Go ahead and skip to the <strong>Walkthrough:</strong> section below, but circle back here during progress bar breaks to read these key points about Docker Engine for Windows Server, gleaned from the Windows Server team at DockerCon:</p>
 
 <ul>
 <li><p><strong>There will be no cross platform containerization</strong>.  Since Docker/libcontainer/LXC/etc are not a hypervisors, and containers are not VMs, there is currently no way to present the appropriate kernel to a container from another platform.  Windows containers will require a Windows Docker host, and Linux containers will require a Linux Docker host.  The Windows Server Containers reuse the host kernel and create a sandboxed environment for the process, exactly like it does on Linux.  Unless there is an unlikely fundamental change in one or both platforms (e.g. adopting a common kernel), cross platform containerization will simply never be a thing.</p></li>
